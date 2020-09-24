@@ -783,7 +783,7 @@ void BaseWindow::retranslateUi(QMainWindow *MainWindow) {
     label_tab_autoMode_place->setText(QApplication::translate("MainWindow", "\346\224\276\347\275\256\347\233\256\346\240\207", nullptr));
     gBox_tab_autoMode_operate->setTitle(QApplication::translate("MainWindow", "\346\223\215\344\275\234\346\240\217", nullptr));
     btn_tab_autoMode_run->setText(QApplication::translate("MainWindow", "\345\220\257\345\212\250", nullptr));
-    btn_tab_autoMode_normalstop->setText(QApplication::translate("MainWindow", "\345\276\252\347\216\257\345\201\234\346\255\242", nullptr));
+    btn_tab_autoMode_normalstop->setText(QApplication::translate("MainWindow", "重启", nullptr));
     btn_tab_autoMode_quickstop->setText(QApplication::translate("MainWindow", "\346\200\245\345\201\234", nullptr));
     gBox_tab_stepMode_showImg->setTitle(QApplication::translate("MainWindow", "\345\233\276\345\203\217\346\230\276\347\244\272", nullptr));
     label_tab_stepMode_showImg->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));

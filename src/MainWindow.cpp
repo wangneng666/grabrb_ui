@@ -15,6 +15,7 @@ MainWindow::~MainWindow() {
 
 }
 
+
 void MainWindow::SysVarInit() {
     //连接状态监控
     vector<string> devDetectorName\
@@ -35,8 +36,8 @@ void MainWindow::SysVarInit() {
     //状态机状态监控
     vector<string> fsmStateName\
     {
-     "init","prepare","updatePcl","detectObj",
-     "grabObj","placeObj","err","exit",
+     "init","prepare","look","detection",
+     "pick","place","error","exit",
     };
     vector<QLabel*> fsmStateShowLable\
     {
@@ -49,8 +50,8 @@ void MainWindow::SysVarInit() {
     //节点名字监控
     vector<string > nodeName\
     {
-     "voiceNode_Detector","pickPlaceBridge_Detector","visionBridge_Detector",
-     "/dm_bridge","/trajectory_planner","/motion_bridge","/hscfsm_bridge"
+     "/voice_assistant","/pickplace_bridge","/vision_bridge",
+     "/dm_bridge","/trajectory_planner","/motion_bridge","/hscfsm_bridge","/perception_bridge"
     };
     for (const auto & j : nodeName) {
         in_nodeNameList.push_back(j);
@@ -68,17 +69,17 @@ void MainWindow::SysVarInit() {
 
 void MainWindow::initRosToptic() {
 
-    fsmCmd_client = Node->serviceClient<hirop_msgs::taskInputCmd>("/VoiceCtlRob_TaskServerCmd");
+    fsmCmd_client = Node->serviceClient<hirop_msgs::taskInputCmd>("/VisualCapture_TaskServerCmd");
     RobReset_client = Node->serviceClient<hsr_rosi_device::ClearFaultSrv>("/clear_robot_fault");
     RobEnable_client = Node->serviceClient<hsr_rosi_device::SetEnableSrv>("/set_robot_enable");
     RobSetMode_client = Node->serviceClient<hsr_rosi_device::setModeSrv>("/set_mode_srv");
 
-    fsmState_subscriber=Node->subscribe<hirop_msgs::taskCmdRet>("/VoiceCtlRob_state",1000,boost::bind(&MainWindow::callback_fsmState_subscriber,this,_1));
+    fsmState_subscriber=Node->subscribe<hirop_msgs::taskCmdRet>("/VisualCapture_state",1000,boost::bind(&MainWindow::callback_fsmState_subscriber,this,_1));
     robStatus_subscriber=Node->subscribe<industrial_msgs::RobotStatus>("robot_status",1,boost::bind(&MainWindow::callback_robStatus_subscriber,this,_1));
-    personImg_subcriber=Node->subscribe<sensor_msgs::Image>("videphoto_feedback",1,boost::bind(&MainWindow::callback_peopleDetectImg_subscriber, this, _1));
-    personImg_subcriber=Node->subscribe<sensor_msgs::Image>("/usb_cam/image_raw",1,boost::bind(&MainWindow::callback_peopleDetectImg_subscriber, this, _1));
+    personImg_subcriber=Node->subscribe<sensor_msgs::Image>("/videphoto_feedback",1,boost::bind(&MainWindow::callback_peopleDetectImg_subscriber, this, _1));
+    // personImg_subcriber=Node->subscribe<sensor_msgs::Image>("/usb_cam/image_raw",1,boost::bind(&MainWindow::callback_peopleDetectImg_subscriber, this, _1));
     yolo6dImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/preview_image",1,boost::bind(&MainWindow::callback_yolo6dImagRes_subcriber, this, _1));
-    d435iImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/preview_image",1,boost::bind(&MainWindow::callback_d435iImagRes_subcriber, this, _1));
+    d435iImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/camera_base/color/image_raw",1,boost::bind(&MainWindow::callback_d435iImagRes_subcriber, this, _1));
 }
 
 void MainWindow::signalAndSlot() {
@@ -234,6 +235,7 @@ void MainWindow::slot_timer_updateStatus() {
 void MainWindow::slot_timer_listenNodeStatus() {
     std::vector<bool > out_nodeIsAlive;
     checkNodeAlive(in_nodeNameList,out_nodeIsAlive);
+
     if(out_nodeIsAlive[0]){
         map_devDetector["voiceNode_Detector"]->lifeNum=100;
         map_devDetector["voiceNode_Detector"]->status=true;
@@ -258,7 +260,11 @@ void MainWindow::slot_timer_listenNodeStatus() {
         map_devDetector["motionBridge_Detector"]->lifeNum=100;
         map_devDetector["motionBridge_Detector"]->status=true;
     }
-    if(out_nodeIsAlive[6]){
+        if(out_nodeIsAlive[6]){
+        map_devDetector["fsmNode_Detector"]->lifeNum=100;
+        map_devDetector["fsmNode_Detector"]->status=true;
+    }
+    if(out_nodeIsAlive[7]){
         map_devDetector["perceptionBridge_Detector"]->lifeNum=100;
         map_devDetector["perceptionBridge_Detector"]->status=true;
     }
@@ -356,7 +362,7 @@ void MainWindow::callback_d435iImagRes_subcriber(const sensor_msgs::Image::Const
 void MainWindow::slot_btn_tabmain_devConn() {
     if(!startUpFlag_devconn){
         startUpFlag_devconn= true;
-        system("rosrun handrb_ui devConn.sh &");
+        system("rosrun grabrb_ui bringup.sh &");
     } else{
         emit emitQmessageBox(infoLevel::warning,QString("请不要重复连接设备!"));
     }
@@ -386,14 +392,19 @@ void MainWindow::slot_btn_tabmain_sysStop() {
 void MainWindow::slot_btn_tabmain_sysReset() {
 //    system("rosrun openni2_tracker voice_shutdown.sh &");
 //    system("rosrun openni2_tracker vision_shutdown.sh &");
-    system("rosnode kill $(rosnode list |grep -v handrb_ui)");
+    system("rosnode kill $(rosnode list |grep -v grabrb_ui &)");
+    sleep(5);
+    system("kill $(ps -ef | grep kinect2* | awk '{print $2}')");
     startUpFlag_devconn= false;
 }
 
+
 void MainWindow::slot_btn_tab_autoMode_run() {
     hirop_msgs::taskInputCmd srv;
-    srv.request.taskName="VoiceCtlRob";
-    srv.request.behavior="start";
+    srv.request.taskName="prepare";
+    srv.request.behavior="starting";
+    srv.request.param.resize(1);
+    srv.request.param[0]="测试";
     if(!fsmCmd_client.call(srv))
     {
         emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
@@ -402,8 +413,8 @@ void MainWindow::slot_btn_tab_autoMode_run() {
 
 void MainWindow::slot_btn_tab_autoMode_normalstop() {
     hirop_msgs::taskInputCmd srv;
-    srv.request.taskName="VoiceCtlRob";
-    srv.request.behavior="toExit";
+    srv.request.taskName="exit";
+    srv.request.behavior="restart";
     if(!fsmCmd_client.call(srv))
     {
         emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
