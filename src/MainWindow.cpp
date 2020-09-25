@@ -297,6 +297,10 @@ void MainWindow::showQmessageBox(infoLevel level,QString info){
 }
 
 void MainWindow::callback_fsmState_subscriber(const hirop_msgs::taskCmdRet::ConstPtr msg) {
+    if((msg->state=="error")&&(msg->behevior=="initing")){
+        emit emitQmessageBox(infoLevel::warning,QString().fromStdString(msg->message.data()->data()));
+    }
+
     if(msg->behevior=="initing"){
         for (auto &fsmstate : map_fsmState) {
             if(fsmstate.second->stateName==msg->state){
