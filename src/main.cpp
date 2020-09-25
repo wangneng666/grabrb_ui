@@ -1,7 +1,7 @@
 #include "include/MainWindow.h"
-//#include "logmanager.h"
-//#include "globalvar.h"
-//#include "messagehandler.h"
+#include "logmanager.h"
+#include "globalvar.h"
+#include "messagehandler.h"
 #include <QApplication>
 
 using namespace std;
@@ -19,9 +19,9 @@ int main(int argc,char** argv){
     MainWindow mainwindow(&node);
     mainwindow.show();
 //    //日志初始化
-//    log4cplus::Initializer initializer;
-//    gloalMain = &mainwindow;
-//    qInstallMessageHandler(customMessageHandler);
+    log4cplus::Initializer initializer;
+    gloalMain = &mainwindow;
+    qInstallMessageHandler(customMessageHandler);
     return app.exec();
 }
 

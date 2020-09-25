@@ -114,6 +114,7 @@ void MainWindow::signalAndSlot() {
     qRegisterMetaType<infoLevel>("infoLevel");
     connect(this, &MainWindow::emitLightColor,this, &MainWindow::showLightColor);
     connect(this, SIGNAL(emitQmessageBox(infoLevel ,QString)), this,SLOT(showQmessageBox(infoLevel,QString)),Qt::QueuedConnection);  //将自定义槽连接到自定义信号
+    connect(this, &MainWindow::emitTextControl,this, &MainWindow::displayTextControl);
     connect(Timer_listenStatus, &QTimer::timeout, this, &MainWindow::slot_timer_updateStatus);
     connect(Timer_listenNodeStatus, &QTimer::timeout, this, &MainWindow::slot_timer_listenNodeStatus);
     Timer_listenStatus->start();
@@ -298,6 +299,7 @@ void MainWindow::showQmessageBox(infoLevel level,QString info){
 
 void MainWindow::callback_fsmState_subscriber(const hirop_msgs::taskCmdRet::ConstPtr msg) {
     if((msg->state=="error")&&(msg->behevior=="initing")){
+        LOG("ERRINFO")->logInfoMessage(msg->message.data()->data());
         emit emitQmessageBox(infoLevel::warning,QString().fromStdString(msg->message.data()->data()));
     }
 
@@ -396,10 +398,18 @@ void MainWindow::slot_btn_tabmain_sysStop() {
 void MainWindow::slot_btn_tabmain_sysReset() {
 //    system("rosrun openni2_tracker voice_shutdown.sh &");
 //    system("rosrun openni2_tracker vision_shutdown.sh &");
-    system("rosnode kill $(rosnode list |grep -v grabrb_ui &)");
-    sleep(5);
-    system("kill $(ps -ef | grep kinect2* | awk '{print $2}')");
-    startUpFlag_devconn= false;
+    std::thread t([&]{
+        btn_tabmain_sysReset->setEnabled(false);
+        system("rosnode kill $(rosnode list |grep -v grabrb_ui ) &");
+        sleep(5);
+        cout<<"5s休眠完"<<endl;
+        system("kill -9 $(ps -ef | grep kinect2* | awk '{print $2}')");
+        system("echo y| rosrun grabrb_ui clearNode.sh");
+
+        startUpFlag_devconn= false;
+        btn_tabmain_sysReset->setEnabled(true);
+    });
+    t.detach();
 }
 
 
@@ -470,11 +480,31 @@ void MainWindow::slot_btn_rbGoHomePose() {
 }
 
 void MainWindow::slot_btn_tab_recoder_ouputRecorder() {
-
+    QString file_path = QFileDialog::getOpenFileName(this,"选择文件",logPath, "Files(*.log)");
+    QString displayString;
+    QFile file(file_path);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return;
+//        qDebug()<<"Can't open the file!"<<endl;
+    }
+    while(!file.atEnd())
+    {
+        QByteArray line = file.readLine();
+        QString str(line);
+        displayString.append(str);
+    }
+    file.close();
+    plainText_tabrecorder->clear();
+    plainText_tabrecorder->setPlainText(displayString);
 }
 
 void MainWindow::slot_btn_tab_recoder_clearRecorder() {
+    plainText_tabrecorder->clear();
+}
 
+void MainWindow::displayTextControl(QString text) {
+    plainText_tabrecorder->appendPlainText(text);
 }
 
 

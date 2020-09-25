@@ -116,6 +116,7 @@ public:
     QPushButton *btn_tabmain_runPrepare;
     QPushButton *btn_tabmain_sysStop;
     QPushButton *btn_tabmain_sysReset;
+
     QWidget *tab_autoMode;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *hLayout_tab_autoMode_1;
@@ -135,6 +136,7 @@ public:
     QLabel *label_tab_autoMode_exit;
     QLabel *label_tab_autoMode_err;
     QLabel *label_tab_autoMode_place;
+
     QGroupBox *gBox_tab_autoMode_operate;
     QVBoxLayout *verticalLayout_10;
     QHBoxLayout *hLayout_tab_autoMode_123;
@@ -162,6 +164,7 @@ public:
     QLabel *label_tab_stepMode_dmBridge;
     QLabel *label_tab_stepMode_plannerBridge;
     QLabel *label_tab_stepMode_motionBridge;
+
     QGroupBox *gBox_tab_stepMode_operate;
     QHBoxLayout *horizontalLayout_12;
     QPushButton *btn_tab_stepMode_goPhotoPose;
@@ -181,6 +184,7 @@ public:
     QGroupBox *groupBox_tabdebug_3;
     QHBoxLayout *horizontalLayout_20;
     QPushButton *btn_rbGoHomePose;
+
     QWidget *tab_recorder;
     QHBoxLayout *horizontalLayout_3;
     QVBoxLayout *vLayout_tab_recorder_1;

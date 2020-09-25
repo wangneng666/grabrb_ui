@@ -2,6 +2,7 @@
 #define GRABRB_UI_MAINWINDOW_H
 
 #include "BaseWindow.h"
+#include "logmanager.h"
 //opencv库
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
@@ -129,8 +130,11 @@ private:
 signals:
     void emitLightColor(vector<QLabel*> label_list,string color);
     void emitQmessageBox(infoLevel level,QString info);
+    void emitTextControl(QString text) const;
+
 
 private slots:
+    void displayTextControl(QString text);
     void showLightColor(vector<QLabel*>  label_list,string color);
     void showQmessageBox(infoLevel level,QString info);
 

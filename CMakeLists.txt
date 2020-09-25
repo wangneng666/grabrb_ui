@@ -45,9 +45,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 catkin_package(
 
 )
-
+link_directories("3rd/log4_cplus/lib")
 include_directories(
  include
+3rd/log4_cplus/include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -59,6 +60,8 @@ add_executable(grabrb_ui
         )
 
 target_link_libraries(grabrb_ui
+        log4cplus
+        logTest
         ${catkin_LIBRARIES}
         ${QT_LIBRARIES}
         ${OpenCV_LIBS}
