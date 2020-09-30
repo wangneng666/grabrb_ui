@@ -80,6 +80,8 @@ void MainWindow::initRosToptic() {
     // personImg_subcriber=Node->subscribe<sensor_msgs::Image>("/usb_cam/image_raw",1,boost::bind(&MainWindow::callback_peopleDetectImg_subscriber, this, _1));
     yolo6dImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/preview_image",1,boost::bind(&MainWindow::callback_yolo6dImagRes_subcriber, this, _1));
     d435iImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/camera_base/color/image_raw",1,boost::bind(&MainWindow::callback_d435iImagRes_subcriber, this, _1));
+    kinect2_subcriber=Node->subscribe<sensor_msgs::Image>("/kinect2/qhd/image_color",1,boost::bind(&MainWindow::callback_kinect2_subscriber, this, _1));
+
 }
 
 void MainWindow::signalAndSlot() {
@@ -320,6 +322,20 @@ void MainWindow::callback_fsmState_subscriber(const hirop_msgs::taskCmdRet::Cons
             }
         }
     }
+    //如果在准备状态并且是声控模式
+    if(msg->state=="prepare"){
+        //如果是声控模式
+        if(cBox_tab_autoMode_mode->currentIndex()==0)
+        {
+            emit emitQmessageBox(infoLevel::information,QString("请说出你想要的任务，比如“抓牛奶盒”"));
+
+        }
+        //如果非声控模式
+        if(cBox_tab_autoMode_mode->currentIndex()==1)
+        {
+            emit emitQmessageBox(infoLevel::information,QString("请再点击一次启动按钮"));
+        }
+    }
 }
 
 void MainWindow::callback_robStatus_subscriber(const industrial_msgs::RobotStatus::ConstPtr robot_status) {
@@ -420,8 +436,6 @@ void MainWindow::slot_btn_tabmain_sysReset() {
 
 
 void MainWindow::slot_btn_tab_autoMode_run() {
-    //声控模式
-    if(cBox_tab_autoMode_mode->currentIndex()==0){
         hirop_msgs::taskInputCmd srv;
         srv.request.taskName="prepare";
         srv.request.behavior="starting";
@@ -431,21 +445,6 @@ void MainWindow::slot_btn_tab_autoMode_run() {
         {
             emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
         }
-    }
-    //非声控模式
-    if(cBox_tab_autoMode_mode->currentIndex()==1){
-        //识别旺仔牛奶盒
-        if(cBox_tab_autoMode_boxmodel->currentIndex()==0)
-        {
-
-        }
-        //识别维他奶盒子
-        if(cBox_tab_autoMode_boxmodel->currentIndex()==1)
-        {
-
-        }
-    }
-
 }
 
 void MainWindow::slot_btn_tab_autoMode_normalstop() {
@@ -559,6 +558,11 @@ void MainWindow::slot_cBox_tab_autoMode_mode_Clicked(int index){
             cBox_tab_autoMode_boxmodel->setVisible(true);
             break;
     }
+}
+
+void MainWindow::callback_kinect2_subscriber(const sensor_msgs::Image::ConstPtr &msg) {
+    map_devDetector["kinect2Conn_Detector"]->lifeNum=100;
+    map_devDetector["kinect2Conn_Detector"]->status= true;
 }
 
 

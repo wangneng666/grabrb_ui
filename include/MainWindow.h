@@ -62,6 +62,7 @@ private:
     QMutex lock_showImg;
     QPalette palette;
 
+
 private:
     //ros消息对象
     ros::ServiceClient RobReset_client;
@@ -75,6 +76,7 @@ private:
     ros::Subscriber personImg_subcriber;
     ros::Subscriber yolo6dImagRes_subcriber;
     ros::Subscriber d435iImagRes_subcriber;
+    ros::Subscriber kinect2_subcriber;
 
 public:
     //系统变量初始化
@@ -128,6 +130,8 @@ private:
     void callback_fsmState_subscriber(const hirop_msgs::taskCmdRet::ConstPtr msg);
     void callback_yolo6dImagRes_subcriber(const sensor_msgs::Image::ConstPtr& msg);
     void callback_d435iImagRes_subcriber(const sensor_msgs::Image::ConstPtr& msg);
+    void callback_kinect2_subscriber(const sensor_msgs::Image::ConstPtr& msg);
+
 signals:
     void emitLightColor(vector<QLabel*> label_list,string color);
     void emitQmessageBox(infoLevel level,QString info);
