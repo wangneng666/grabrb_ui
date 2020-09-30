@@ -99,7 +99,8 @@ private:
     void slot_btn_tabmain_runPrepare();
     void slot_btn_tabmain_sysStop();
     void slot_btn_tabmain_sysReset();
-    //自动模式界面
+
+        //自动模式界面
     void slot_btn_tab_autoMode_run();
     void slot_btn_tab_autoMode_normalstop();
     void slot_btn_tab_autoMode_quickstop();
@@ -137,7 +138,8 @@ private slots:
     void displayTextControl(QString text);
     void showLightColor(vector<QLabel*>  label_list,string color);
     void showQmessageBox(infoLevel level,QString info);
-
+    void slot_combox_chooseMode_Clicked(int index);
+    void slot_cBox_tab_autoMode_mode_Clicked(int index);
 };
 
 

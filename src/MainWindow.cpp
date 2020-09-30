@@ -63,7 +63,7 @@ void MainWindow::SysVarInit() {
     Timer_listenNodeStatus->setInterval(1000);
     //初始化状态机颜色标签
     for (auto &fsmstate : map_fsmState) {
-        lableShowImag(fsmstate.second->lableList_showStatus,Qt::red);
+        lableShowImag(fsmstate.second->lableList_showStatus,Qt::lightGray);
     }
 }
 
@@ -89,10 +89,13 @@ void MainWindow::signalAndSlot() {
     connect(btn_tabmain_runPrepare,&QPushButton::clicked,this,&MainWindow::slot_btn_tabmain_runPrepare);
     connect(btn_tabmain_sysStop,&QPushButton::clicked,this,&MainWindow::slot_btn_tabmain_sysStop);
     connect(btn_tabmain_sysReset,&QPushButton::clicked,this,&MainWindow::slot_btn_tabmain_sysReset);
+    connect(cbox_tabmain_chooseMode,SIGNAL(currentIndexChanged(int)), this, SLOT(slot_combox_chooseMode_Clicked(int)));
+
     //自动模式界面
     connect(btn_tab_autoMode_run,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_autoMode_run);
     connect(btn_tab_autoMode_normalstop,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_autoMode_normalstop);
     connect(btn_tab_autoMode_quickstop,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_autoMode_quickstop);
+    connect(cBox_tab_autoMode_mode,SIGNAL(currentIndexChanged(int)), this, SLOT(slot_cBox_tab_autoMode_mode_Clicked(int)));
 
     //手动模式界面
     connect(btn_tab_stepMode_goPhotoPose,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_stepMode_goPhotoPose);
@@ -356,8 +359,8 @@ void MainWindow::callback_yolo6dImagRes_subcriber(const sensor_msgs::Image::Cons
     cv::Mat mat = ptr->image;
     QImage qimage = cvMat2QImage(mat);
     QPixmap tmp_pixmap = QPixmap::fromImage(qimage);
-    new_pixmap = tmp_pixmap.scaled(msg->width, msg->height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
-    label_tab_stepMode_showImg->setPixmap(new_pixmap);
+    new_pixmap = tmp_pixmap.scaled(msg->width/2, msg->height/2, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
+    labeltab_autoMode_image->setPixmap(new_pixmap);
 }
 
 void MainWindow::callback_d435iImagRes_subcriber(const sensor_msgs::Image::ConstPtr &msg) {
@@ -398,6 +401,9 @@ void MainWindow::slot_btn_tabmain_sysStop() {
 void MainWindow::slot_btn_tabmain_sysReset() {
 //    system("rosrun openni2_tracker voice_shutdown.sh &");
 //    system("rosrun openni2_tracker vision_shutdown.sh &");
+    for (auto &fsmstate : map_fsmState) {
+        lableShowImag(fsmstate.second->lableList_showStatus,Qt::lightGray);
+    }
     std::thread t([&]{
         btn_tabmain_sysReset->setEnabled(false);
         system("rosnode kill $(rosnode list |grep -v grabrb_ui ) &");
@@ -414,15 +420,32 @@ void MainWindow::slot_btn_tabmain_sysReset() {
 
 
 void MainWindow::slot_btn_tab_autoMode_run() {
-    hirop_msgs::taskInputCmd srv;
-    srv.request.taskName="prepare";
-    srv.request.behavior="starting";
-    srv.request.param.resize(1);
-    srv.request.param[0]="测试";
-    if(!fsmCmd_client.call(srv))
-    {
-        emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
+    //声控模式
+    if(cBox_tab_autoMode_mode->currentIndex()==0){
+        hirop_msgs::taskInputCmd srv;
+        srv.request.taskName="prepare";
+        srv.request.behavior="starting";
+        srv.request.param.resize(1);
+        srv.request.param[0]="测试";
+        if(!fsmCmd_client.call(srv))
+        {
+            emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
+        }
     }
+    //非声控模式
+    if(cBox_tab_autoMode_mode->currentIndex()==1){
+        //识别旺仔牛奶盒
+        if(cBox_tab_autoMode_boxmodel->currentIndex()==0)
+        {
+
+        }
+        //识别维他奶盒子
+        if(cBox_tab_autoMode_boxmodel->currentIndex()==1)
+        {
+
+        }
+    }
+
 }
 
 void MainWindow::slot_btn_tab_autoMode_normalstop() {
@@ -507,5 +530,35 @@ void MainWindow::displayTextControl(QString text) {
     plainText_tabrecorder->appendPlainText(text);
 }
 
+void MainWindow::slot_combox_chooseMode_Clicked(int index) {
+//    switch (index) {
+//        case 0:
+//            tab_autoMode.
+//            tab_autoMode->setVisible(false);
+//            tab_stepMode->setVisible(false);
+//            break;
+//        case 1:
+//            tab_autoMode->setVisible(true);
+//            tab_stepMode->setVisible(false);
+//            break;
+//        case 2:
+//            tab_autoMode->setVisible(false);
+//            tab_stepMode->setVisible(true);
+//            break;
+//    }
+}
+
+void MainWindow::slot_cBox_tab_autoMode_mode_Clicked(int index){
+    switch (index) {
+        case 0:
+            cBox_tab_autoMode_mode->setVisible(true);
+            cBox_tab_autoMode_boxmodel->setVisible(false);
+            break;
+        case 1:
+            cBox_tab_autoMode_mode->setVisible(true);
+            cBox_tab_autoMode_boxmodel->setVisible(true);
+            break;
+    }
+}
 
 

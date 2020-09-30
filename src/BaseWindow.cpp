@@ -348,6 +348,34 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
 
     vLayout_tab_autoMode_12->addWidget(gBox_tab_autoMode_fsm);
 
+    gBox_tab_autoMode_mode = new QGroupBox(tab_autoMode);
+    gBox_tab_autoMode_mode->setObjectName(QString::fromUtf8("gBox_tab_autoMode_mode"));
+    gBox_tab_autoMode_mode->setStyleSheet(groupBox_qss);
+
+    verticalLayout = new QVBoxLayout(gBox_tab_autoMode_mode);
+    verticalLayout->setSpacing(6);
+    verticalLayout->setContentsMargins(11, 11, 11, 11);
+    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+    cBox_tab_autoMode_mode = new QComboBox(gBox_tab_autoMode_mode);
+    cBox_tab_autoMode_mode->addItem(QString());
+    cBox_tab_autoMode_mode->addItem(QString());
+    cBox_tab_autoMode_mode->setObjectName(QString::fromUtf8("cBox_tab_autoMode_mode"));
+    cBox_tab_autoMode_mode->setFixedSize(QSize(200, 50));
+    verticalLayout->addWidget(cBox_tab_autoMode_mode,0,Qt::AlignCenter);
+
+    cBox_tab_autoMode_boxmodel = new QComboBox(gBox_tab_autoMode_mode);
+    cBox_tab_autoMode_boxmodel->addItem(QString());
+    cBox_tab_autoMode_boxmodel->addItem(QString());
+    cBox_tab_autoMode_boxmodel->setObjectName(QString::fromUtf8("cBox_tab_autoMode_boxmodel"));
+    cBox_tab_autoMode_boxmodel->setFixedSize(QSize(200, 50));
+
+
+    verticalLayout->addWidget(cBox_tab_autoMode_boxmodel,0,Qt::AlignCenter);
+
+
+    vLayout_tab_autoMode_12->addWidget(gBox_tab_autoMode_mode);
+
+
     gBox_tab_autoMode_operate = new QGroupBox(tab_autoMode);
     gBox_tab_autoMode_operate->setObjectName(QString::fromUtf8("gBox_tab_autoMode_operate"));
     gBox_tab_autoMode_operate->setStyleSheet(groupBox_qss);
@@ -732,6 +760,9 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
     label_tab_stepMode_dmBridge->setAlignment(Qt::AlignCenter);
     label_tab_stepMode_plannerBridge->setAlignment(Qt::AlignCenter);
     label_tab_stepMode_motionBridge->setAlignment(Qt::AlignCenter);
+
+    cBox_tab_autoMode_boxmodel->setVisible(false);
+
     retranslateUi(MainWindow);
 
 //    tabWidget->setCurrentIndex(3);
@@ -781,6 +812,13 @@ void BaseWindow::retranslateUi(QMainWindow *MainWindow) {
     label_tab_autoMode_exit->setText(QApplication::translate("MainWindow", "\351\200\200\345\207\272\347\212\266\346\200\201", nullptr));
     label_tab_autoMode_err->setText(QApplication::translate("MainWindow", "\346\225\205\351\232\234\347\212\266\346\200\201", nullptr));
     label_tab_autoMode_place->setText(QApplication::translate("MainWindow", "\346\224\276\347\275\256\347\233\256\346\240\207", nullptr));
+    gBox_tab_autoMode_mode->setTitle(QApplication::translate("MainWindow", "\346\250\241\345\274\217\350\256\276\347\275\256", nullptr));
+    cBox_tab_autoMode_mode->setItemText(0, QApplication::translate("MainWindow", "\345\243\260\346\216\247\346\250\241\345\274\217", nullptr));
+    cBox_tab_autoMode_mode->setItemText(1, QApplication::translate("MainWindow", "\351\235\236\345\243\260\346\216\247\346\250\241\345\274\217", nullptr));
+
+    cBox_tab_autoMode_boxmodel->setItemText(0, QApplication::translate("MainWindow", "\346\212\223\346\227\272\344\273\224\347\211\233\345\245\266", nullptr));
+    cBox_tab_autoMode_boxmodel->setItemText(1, QApplication::translate("MainWindow", "\346\212\223\347\273\264\344\273\226\345\245\266", nullptr));
+
     gBox_tab_autoMode_operate->setTitle(QApplication::translate("MainWindow", "\346\223\215\344\275\234\346\240\217", nullptr));
     btn_tab_autoMode_run->setText(QApplication::translate("MainWindow", "\345\220\257\345\212\250", nullptr));
     btn_tab_autoMode_normalstop->setText(QApplication::translate("MainWindow", "重启", nullptr));

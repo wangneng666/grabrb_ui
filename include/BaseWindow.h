@@ -136,7 +136,10 @@ public:
     QLabel *label_tab_autoMode_exit;
     QLabel *label_tab_autoMode_err;
     QLabel *label_tab_autoMode_place;
-
+    QGroupBox *gBox_tab_autoMode_mode;
+    QVBoxLayout *verticalLayout;
+    QComboBox *cBox_tab_autoMode_mode;
+    QComboBox *cBox_tab_autoMode_boxmodel;
     QGroupBox *gBox_tab_autoMode_operate;
     QVBoxLayout *verticalLayout_10;
     QHBoxLayout *hLayout_tab_autoMode_123;

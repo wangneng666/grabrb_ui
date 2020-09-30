@@ -46,7 +46,7 @@ public:
     QGridLayout *gLayout_tabmain_status;
     QLabel *label_tabmain_motionBridge;
     QLabel *label_tabmain_perceptionBridge;
-    QLabel *lable_;
+    QLabel *label_tabmain_rbConn;
     QLabel *label_tabmain_rbIsWell;
     QLabel *label_tabmain_rbEnable;
     QLabel *label_tabmain_plannerBridge;
@@ -89,6 +89,10 @@ public:
     QLabel *label_tab_autoMode_exit;
     QLabel *label_tab_autoMode_err;
     QLabel *label_tab_autoMode_place;
+    QGroupBox *gBox_tab_autoMode_mode;
+    QVBoxLayout *verticalLayout;
+    QComboBox *cBox_tab_autoMode_mode;
+    QComboBox *cBox_tab_autoMode_boxmodel;
     QGroupBox *gBox_tab_autoMode_operate;
     QVBoxLayout *verticalLayout_10;
     QHBoxLayout *hLayout_tab_autoMode_123;
@@ -107,15 +111,15 @@ public:
     QHBoxLayout *horizontalLayout_11;
     QGridLayout *gLayout_tab_stepMode;
     QLabel *label_tab_stepMode_pickPlaceBridge;
+    QLabel *label_tab_stepMode_senceFinish;
     QLabel *label_tab_stepMode_rd435iConn;
     QLabel *label_tab_stepMode_rbIsWell;
     QLabel *label_tab_stepMode_rbEnable;
     QLabel *label_tab_stepMode_gripperConn;
-    QLabel *label_tab_stepMode_senceFinish;
-    QLabel *label_tab_stepMode_perceptionBridge;
-    QLabel *label_tab_stepMode_dmBridge;
     QLabel *label_tab_stepMode_plannerBridge;
     QLabel *label_tab_stepMode_motionBridge;
+    QLabel *label_tab_stepMode_perceptionBridge;
+    QLabel *label_tab_stepMode_dmBridge;
     QGroupBox *gBox_tab_stepMode_operate;
     QHBoxLayout *horizontalLayout_12;
     QPushButton *btn_tab_stepMode_goPhotoPose;
@@ -247,10 +251,10 @@ public:
 
         gLayout_tabmain_status->addWidget(label_tabmain_perceptionBridge, 3, 4, 1, 1);
 
-        lable_ = new QLabel(gBox_tabmain_status);
-        lable_->setObjectName(QString::fromUtf8("lable_"));
+        label_tabmain_rbConn = new QLabel(gBox_tabmain_status);
+        label_tabmain_rbConn->setObjectName(QString::fromUtf8("label_tabmain_rbConn"));
 
-        gLayout_tabmain_status->addWidget(lable_, 0, 0, 1, 1);
+        gLayout_tabmain_status->addWidget(label_tabmain_rbConn, 0, 0, 1, 1);
 
         label_tabmain_rbIsWell = new QLabel(gBox_tabmain_status);
         label_tabmain_rbIsWell->setObjectName(QString::fromUtf8("label_tabmain_rbIsWell"));
@@ -589,6 +593,56 @@ public:
 
         vLayout_tab_autoMode_12->addWidget(gBox_tab_autoMode_fsm);
 
+        gBox_tab_autoMode_mode = new QGroupBox(tab_autoMode);
+        gBox_tab_autoMode_mode->setObjectName(QString::fromUtf8("gBox_tab_autoMode_mode"));
+        gBox_tab_autoMode_mode->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
+"\n"
+"border-width:2px;\n"
+"\n"
+"border-style:solid;\n"
+"\n"
+"border-radius: 10px;\n"
+"\n"
+"border-color:gray;\n"
+"\n"
+"margin-top:0.5ex;\n"
+"\n"
+"}\n"
+"\n"
+"QGroupBox::title{\n"
+"\n"
+"subcontrol-origin:margin;\n"
+"\n"
+"subcontrol-position:top left;\n"
+"\n"
+"left:10px;\n"
+"\n"
+"margin-left:0px;\n"
+"\n"
+"padding:0 1px;\n"
+"\n"
+"}"));
+        verticalLayout = new QVBoxLayout(gBox_tab_autoMode_mode);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        cBox_tab_autoMode_mode = new QComboBox(gBox_tab_autoMode_mode);
+        cBox_tab_autoMode_mode->addItem(QString());
+        cBox_tab_autoMode_mode->addItem(QString());
+        cBox_tab_autoMode_mode->setObjectName(QString::fromUtf8("cBox_tab_autoMode_mode"));
+
+        verticalLayout->addWidget(cBox_tab_autoMode_mode);
+
+        cBox_tab_autoMode_boxmodel = new QComboBox(gBox_tab_autoMode_mode);
+        cBox_tab_autoMode_boxmodel->addItem(QString());
+        cBox_tab_autoMode_boxmodel->addItem(QString());
+        cBox_tab_autoMode_boxmodel->setObjectName(QString::fromUtf8("cBox_tab_autoMode_boxmodel"));
+
+        verticalLayout->addWidget(cBox_tab_autoMode_boxmodel);
+
+
+        vLayout_tab_autoMode_12->addWidget(gBox_tab_autoMode_mode);
+
         gBox_tab_autoMode_operate = new QGroupBox(tab_autoMode);
         gBox_tab_autoMode_operate->setObjectName(QString::fromUtf8("gBox_tab_autoMode_operate"));
         gBox_tab_autoMode_operate->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
@@ -757,6 +811,11 @@ public:
 
         gLayout_tab_stepMode->addWidget(label_tab_stepMode_pickPlaceBridge, 1, 0, 1, 1);
 
+        label_tab_stepMode_senceFinish = new QLabel(gBox_tab_stepMode_status);
+        label_tab_stepMode_senceFinish->setObjectName(QString::fromUtf8("label_tab_stepMode_senceFinish"));
+
+        gLayout_tab_stepMode->addWidget(label_tab_stepMode_senceFinish, 1, 4, 1, 1);
+
         label_tab_stepMode_rd435iConn = new QLabel(gBox_tab_stepMode_status);
         label_tab_stepMode_rd435iConn->setObjectName(QString::fromUtf8("label_tab_stepMode_rd435iConn"));
 
@@ -777,10 +836,15 @@ public:
 
         gLayout_tab_stepMode->addWidget(label_tab_stepMode_gripperConn, 0, 2, 1, 1);
 
-        label_tab_stepMode_senceFinish = new QLabel(gBox_tab_stepMode_status);
-        label_tab_stepMode_senceFinish->setObjectName(QString::fromUtf8("label_tab_stepMode_senceFinish"));
+        label_tab_stepMode_plannerBridge = new QLabel(gBox_tab_stepMode_status);
+        label_tab_stepMode_plannerBridge->setObjectName(QString::fromUtf8("label_tab_stepMode_plannerBridge"));
 
-        gLayout_tab_stepMode->addWidget(label_tab_stepMode_senceFinish, 1, 4, 1, 1);
+        gLayout_tab_stepMode->addWidget(label_tab_stepMode_plannerBridge, 1, 1, 1, 1);
+
+        label_tab_stepMode_motionBridge = new QLabel(gBox_tab_stepMode_status);
+        label_tab_stepMode_motionBridge->setObjectName(QString::fromUtf8("label_tab_stepMode_motionBridge"));
+
+        gLayout_tab_stepMode->addWidget(label_tab_stepMode_motionBridge, 1, 2, 1, 1);
 
         label_tab_stepMode_perceptionBridge = new QLabel(gBox_tab_stepMode_status);
         label_tab_stepMode_perceptionBridge->setObjectName(QString::fromUtf8("label_tab_stepMode_perceptionBridge"));
@@ -791,16 +855,6 @@ public:
         label_tab_stepMode_dmBridge->setObjectName(QString::fromUtf8("label_tab_stepMode_dmBridge"));
 
         gLayout_tab_stepMode->addWidget(label_tab_stepMode_dmBridge, 0, 4, 1, 1);
-
-        label_tab_stepMode_plannerBridge = new QLabel(gBox_tab_stepMode_status);
-        label_tab_stepMode_plannerBridge->setObjectName(QString::fromUtf8("label_tab_stepMode_plannerBridge"));
-
-        gLayout_tab_stepMode->addWidget(label_tab_stepMode_plannerBridge, 1, 1, 1, 1);
-
-        label_tab_stepMode_motionBridge = new QLabel(gBox_tab_stepMode_status);
-        label_tab_stepMode_motionBridge->setObjectName(QString::fromUtf8("label_tab_stepMode_motionBridge"));
-
-        gLayout_tab_stepMode->addWidget(label_tab_stepMode_motionBridge, 1, 2, 1, 1);
 
 
         horizontalLayout_11->addLayout(gLayout_tab_stepMode);
@@ -1082,7 +1136,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(3);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1096,7 +1150,7 @@ public:
         gBox_tabmain_status->setTitle(QApplication::translate("MainWindow", "\350\277\220\350\241\214\345\207\206\345\244\207\347\212\266\346\200\201", nullptr));
         label_tabmain_motionBridge->setText(QApplication::translate("MainWindow", "\350\277\220\345\212\250\346\241\245\350\212\202\347\202\271", nullptr));
         label_tabmain_perceptionBridge->setText(QApplication::translate("MainWindow", "\346\204\237\347\237\245\346\241\245\350\212\202\347\202\271", nullptr));
-        lable_->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\350\277\236\346\216\245", nullptr));
+        label_tabmain_rbConn->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\350\277\236\346\216\245", nullptr));
         label_tabmain_rbIsWell->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\346\255\243\345\270\270", nullptr));
         label_tabmain_rbEnable->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\344\274\272\346\234\215", nullptr));
         label_tabmain_plannerBridge->setText(QApplication::translate("MainWindow", "\350\247\204\345\210\222\346\241\245\350\212\202\347\202\271", nullptr));
@@ -1108,7 +1162,7 @@ public:
         label_tabmain_visionBridge->setText(QApplication::translate("MainWindow", "\350\247\206\350\247\211\346\241\245\350\212\202\347\202\271", nullptr));
         label_tabmain_senceFinish->setText(QApplication::translate("MainWindow", "\345\234\272\346\231\257\345\212\240\350\275\275\345\256\214\346\257\225", nullptr));
         label_tabmain_pickPlaceBridge->setText(QApplication::translate("MainWindow", "\346\212\223\345\217\226\346\241\245\350\212\202\347\202\271", nullptr));
-        label_tabmain_uiNode->setText(QApplication::translate("MainWindow", "UI\350\212\202\347\202\271", nullptr));
+        label_tabmain_uiNode->setText(QApplication::translate("MainWindow", "\347\212\266\346\200\201\346\234\272\350\212\202\347\202\271", nullptr));
         gBox_tabmain_mode->setTitle(QApplication::translate("MainWindow", "\346\250\241\345\274\217\351\200\211\346\213\251", nullptr));
         cbox_tabmain_chooseMode->setItemText(0, QApplication::translate("MainWindow", "\350\257\267\351\200\211\346\213\251\350\277\220\350\241\214\346\250\241\345\274\217", nullptr));
         cbox_tabmain_chooseMode->setItemText(1, QApplication::translate("MainWindow", "\350\207\252\345\212\250\346\250\241\345\274\217", nullptr));
@@ -1131,6 +1185,13 @@ public:
         label_tab_autoMode_exit->setText(QApplication::translate("MainWindow", "\351\200\200\345\207\272\347\212\266\346\200\201", nullptr));
         label_tab_autoMode_err->setText(QApplication::translate("MainWindow", "\346\225\205\351\232\234\347\212\266\346\200\201", nullptr));
         label_tab_autoMode_place->setText(QApplication::translate("MainWindow", "\346\224\276\347\275\256\347\233\256\346\240\207", nullptr));
+        gBox_tab_autoMode_mode->setTitle(QApplication::translate("MainWindow", "\346\250\241\345\274\217\350\256\276\347\275\256", nullptr));
+        cBox_tab_autoMode_mode->setItemText(0, QApplication::translate("MainWindow", "\345\243\260\346\216\247\346\250\241\345\274\217", nullptr));
+        cBox_tab_autoMode_mode->setItemText(1, QApplication::translate("MainWindow", "\351\235\236\345\243\260\346\216\247\346\250\241\345\274\217", nullptr));
+
+        cBox_tab_autoMode_boxmodel->setItemText(0, QApplication::translate("MainWindow", "\346\212\223\346\227\272\344\273\224\347\211\233\345\245\266", nullptr));
+        cBox_tab_autoMode_boxmodel->setItemText(1, QApplication::translate("MainWindow", "\346\212\223\347\273\264\344\273\226\345\245\266", nullptr));
+
         gBox_tab_autoMode_operate->setTitle(QApplication::translate("MainWindow", "\346\223\215\344\275\234\346\240\217", nullptr));
         btn_tab_autoMode_run->setText(QApplication::translate("MainWindow", "\345\220\257\345\212\250", nullptr));
         btn_tab_autoMode_normalstop->setText(QApplication::translate("MainWindow", "\345\276\252\347\216\257\345\201\234\346\255\242", nullptr));
@@ -1139,15 +1200,15 @@ public:
         label_tab_stepMode_showImg->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
         gBox_tab_stepMode_status->setTitle(QApplication::translate("MainWindow", "\345\207\206\345\244\207\347\212\266\346\200\201", nullptr));
         label_tab_stepMode_pickPlaceBridge->setText(QApplication::translate("MainWindow", "\346\212\223\345\217\226\346\241\245\350\212\202\347\202\271", nullptr));
+        label_tab_stepMode_senceFinish->setText(QApplication::translate("MainWindow", "\345\234\272\346\231\257\345\212\240\350\275\275\345\256\214\346\257\225", nullptr));
         label_tab_stepMode_rd435iConn->setText(QApplication::translate("MainWindow", "d435i\347\233\270\346\234\272\350\277\236\346\216\245", nullptr));
         label_tab_stepMode_rbIsWell->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\346\255\243\345\270\270", nullptr));
         label_tab_stepMode_rbEnable->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\344\274\272\346\234\215", nullptr));
         label_tab_stepMode_gripperConn->setText(QApplication::translate("MainWindow", "\345\244\271\347\210\252\350\277\236\346\216\245", nullptr));
-        label_tab_stepMode_senceFinish->setText(QApplication::translate("MainWindow", "\345\234\272\346\231\257\345\212\240\350\275\275\345\256\214\346\257\225", nullptr));
-        label_tab_stepMode_perceptionBridge->setText(QApplication::translate("MainWindow", "\346\204\237\347\237\245\346\241\245", nullptr));
-        label_tab_stepMode_dmBridge->setText(QApplication::translate("MainWindow", "\346\225\260\346\215\256\346\241\245\350\212\202\347\202\271", nullptr));
         label_tab_stepMode_plannerBridge->setText(QApplication::translate("MainWindow", "\350\247\204\345\210\222\346\241\245\350\212\202\347\202\271", nullptr));
         label_tab_stepMode_motionBridge->setText(QApplication::translate("MainWindow", "\350\277\220\345\212\250\346\241\245", nullptr));
+        label_tab_stepMode_perceptionBridge->setText(QApplication::translate("MainWindow", "\346\204\237\347\237\245\346\241\245", nullptr));
+        label_tab_stepMode_dmBridge->setText(QApplication::translate("MainWindow", "\346\225\260\346\215\256\346\241\245\350\212\202\347\202\271", nullptr));
         gBox_tab_stepMode_operate->setTitle(QApplication::translate("MainWindow", "\346\223\215\344\275\234\346\240\217", nullptr));
         btn_tab_stepMode_goPhotoPose->setText(QApplication::translate("MainWindow", "\345\216\273\345\210\260\346\213\215\347\205\247\347\202\271", nullptr));
         btn_tab_stepMode_detectAndGrab->setText(QApplication::translate("MainWindow", "\350\257\206\345\210\253\346\212\223\345\217\226", nullptr));
@@ -1157,7 +1218,7 @@ public:
         groupBox_tabdebug_1->setTitle(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\350\260\203\350\257\225", nullptr));
         btn_rbSetEnable->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\344\270\212\344\275\277\350\203\275", nullptr));
         btn_rbReset->setText(QApplication::translate("MainWindow", "\346\234\272\345\231\250\344\272\272\345\244\215\344\275\215", nullptr));
-        groupBox_tabdebug_2->setTitle(QApplication::translate("MainWindow", "\344\272\224\346\214\207\345\244\271\347\210\252\346\211\213\345\236\213\350\260\203\350\257\225", nullptr));
+        groupBox_tabdebug_2->setTitle(QApplication::translate("MainWindow", "\345\244\271\347\210\252\350\260\203\350\257\225", nullptr));
         btn_gripper_open->setText(QApplication::translate("MainWindow", "\345\274\240\345\274\200", nullptr));
         btn_gripper_close->setText(QApplication::translate("MainWindow", "\345\205\263\351\227\255", nullptr));
         groupBox_tabdebug_3->setTitle(QApplication::translate("MainWindow", "\345\205\266\344\273\226\350\260\203\350\257\225", nullptr));

@@ -548,6 +548,72 @@ padding:0 1px;
                  </widget>
                 </item>
                 <item>
+                 <widget class="QGroupBox" name="gBox_tab_autoMode_mode">
+                  <property name="styleSheet">
+                   <string notr="true">QGroupBox{
+
+border-width:2px;
+
+border-style:solid;
+
+border-radius: 10px;
+
+border-color:gray;
+
+margin-top:0.5ex;
+
+}
+
+QGroupBox::title{
+
+subcontrol-origin:margin;
+
+subcontrol-position:top left;
+
+left:10px;
+
+margin-left:0px;
+
+padding:0 1px;
+
+}</string>
+                  </property>
+                  <property name="title">
+                   <string>模式设置</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout">
+                   <item>
+                    <widget class="QComboBox" name="cBox_tab_autoMode_mode">
+                     <item>
+                      <property name="text">
+                       <string>声控模式</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>非声控模式</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="cBox_tab_autoMode_boxmodel">
+                     <item>
+                      <property name="text">
+                       <string>抓旺仔牛奶</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>抓维他奶</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
                  <widget class="QGroupBox" name="gBox_tab_autoMode_operate">
                   <property name="styleSheet">
                    <string notr="true">QGroupBox{
