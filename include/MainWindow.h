@@ -23,6 +23,7 @@
 #include "std_srvs/SetBool.h"
 #include "hirop_msgs/taskInputCmd.h"
 #include "hirop_msgs/taskCmdRet.h"
+#include "hirop_msgs/robotError.h"
 
 //标准库
 #include "ros/ros.h"
@@ -61,7 +62,7 @@ private:
     QTimer* Timer_listenNodeStatus;
     QMutex lock_showImg;
     QPalette palette;
-
+    bool messagebox_showOnce= false;
 
 private:
     //ros消息对象
@@ -69,6 +70,7 @@ private:
     ros::ServiceClient RobEnable_client;
     ros::ServiceClient RobSetMode_client;
     ros::ServiceClient fsmCmd_client;///VoiceCtlRob_TaskServerCmd
+    ros::ServiceClient getRobotErr_client;
 
     ros::Subscriber fsmState_subscriber;
     ros::Subscriber robStatus_subscriber;
@@ -93,6 +95,7 @@ public:
     QImage cvMat2QImage(const cv::Mat &mat) ;
     //lable显示色彩
     void lableShowImag(QLabel* lable,Qt::GlobalColor color);
+    void LisionRbErrInfo();
     //
 private:
     /********************按钮槽函数**************************************/

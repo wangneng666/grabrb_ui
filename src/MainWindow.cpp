@@ -73,6 +73,7 @@ void MainWindow::initRosToptic() {
     RobReset_client = Node->serviceClient<hsr_rosi_device::ClearFaultSrv>("/clear_robot_fault");
     RobEnable_client = Node->serviceClient<hsr_rosi_device::SetEnableSrv>("/set_robot_enable");
     RobSetMode_client = Node->serviceClient<hsr_rosi_device::setModeSrv>("/set_mode_srv");
+    getRobotErr_client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
 
     fsmState_subscriber=Node->subscribe<hirop_msgs::taskCmdRet>("/VisualCapture_state",1000,boost::bind(&MainWindow::callback_fsmState_subscriber,this,_1));
     robStatus_subscriber=Node->subscribe<industrial_msgs::RobotStatus>("robot_status",1,boost::bind(&MainWindow::callback_robStatus_subscriber,this,_1));
@@ -216,6 +217,21 @@ void MainWindow::lableShowImag(QLabel *lable, Qt::GlobalColor color) {
 //    lock_showImg.unlock();
 }
 
+void MainWindow::LisionRbErrInfo() {
+    hirop_msgs::robotError srv;
+    ros::ServiceClient client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
+    getRobotErr_client.call(srv);
+    uint64_t level=srv.response.errorLevel;
+    int errorLevel=level;
+    string errorMsg=srv.response.errorMsg;
+    string isError=srv.response.isError?"true":"false";
+    string dealMsg=srv.response.dealMsg;
+    QString tmp=QString("errorLevel:%1\nerrorMsg:%2\nisError:%3\ndealMsg:%4").arg(errorLevel).arg(QString().fromStdString(errorMsg)).arg(QString().fromStdString(isError)).arg(QString().fromStdString(dealMsg));
+    if(srv.response.isError){
+        emit emitQmessageBox(infoLevel::information,tmp);
+    }
+}
+
 void MainWindow::slot_timer_updateStatus() {
     for (auto &detector : map_devDetector)
     {
@@ -234,6 +250,17 @@ void MainWindow::slot_timer_updateStatus() {
                 emit emitLightColor(detector.second->lableList_showStatus, "red");
             }
         }
+    }
+
+    if(map_devDetector["rbIsWell_Detector"]->status== false){
+        if(!messagebox_showOnce)
+        {
+            LisionRbErrInfo();
+            messagebox_showOnce= true;
+        }
+    } else
+    {
+        messagebox_showOnce= false;
     }
 }
 
@@ -482,11 +509,14 @@ void MainWindow::slot_btn_tab_stepMode_Estop() {
 }
 
 void MainWindow::slot_btn_rbSetEnable() {
-
+    hsr_rosi_device::SetEnableSrv srv;
+    srv.request.enable= true;
+    RobEnable_client.call(srv);
 }
 
 void MainWindow::slot_btn_rbReset() {
-
+    hsr_rosi_device::ClearFaultSrv srv_clear;
+    RobReset_client.call(srv_clear);
 }
 
 void MainWindow::slot_btn_gripper_open() {
@@ -532,17 +562,16 @@ void MainWindow::displayTextControl(QString text) {
 void MainWindow::slot_combox_chooseMode_Clicked(int index) {
 //    switch (index) {
 //        case 0:
-//            tab_autoMode.
-//            tab_autoMode->setVisible(false);
-//            tab_stepMode->setVisible(false);
+//            tab_autoMode->setEnabled(false);
+//            tab_stepMode->setEnabled(false);
 //            break;
 //        case 1:
-//            tab_autoMode->setVisible(true);
-//            tab_stepMode->setVisible(false);
+//            tabWidget->removeTab(1);
+//            tabWidget->insertTab(1,tab_autoMode, QString("自动模式界面"));
 //            break;
 //        case 2:
-//            tab_autoMode->setVisible(false);
-//            tab_stepMode->setVisible(true);
+//            tabWidget->removeTab(1);
+//            tabWidget->insertTab(1,tab_stepMode, QString("手动模式界面"));
 //            break;
 //    }
 }
