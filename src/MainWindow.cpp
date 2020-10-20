@@ -73,7 +73,7 @@ void MainWindow::initRosToptic() {
     RobReset_client = Node->serviceClient<hsr_rosi_device::ClearFaultSrv>("/clear_robot_fault");
     RobEnable_client = Node->serviceClient<hsr_rosi_device::SetEnableSrv>("/set_robot_enable");
     RobSetMode_client = Node->serviceClient<hsr_rosi_device::setModeSrv>("/set_mode_srv");
-    getRobotErr_client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
+    // getRobotErr_client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
 
     fsmState_subscriber=Node->subscribe<hirop_msgs::taskCmdRet>("/VisualCapture_state",1000,boost::bind(&MainWindow::callback_fsmState_subscriber,this,_1));
     robStatus_subscriber=Node->subscribe<industrial_msgs::RobotStatus>("robot_status",1,boost::bind(&MainWindow::callback_robStatus_subscriber,this,_1));
@@ -81,7 +81,7 @@ void MainWindow::initRosToptic() {
     // personImg_subcriber=Node->subscribe<sensor_msgs::Image>("/usb_cam/image_raw",1,boost::bind(&MainWindow::callback_peopleDetectImg_subscriber, this, _1));
     yolo6dImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/preview_image",1,boost::bind(&MainWindow::callback_yolo6dImagRes_subcriber, this, _1));
     d435iImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/camera_base/color/image_raw",1,boost::bind(&MainWindow::callback_d435iImagRes_subcriber, this, _1));
-    kinect2_subcriber=Node->subscribe<sensor_msgs::Image>("/kinect2/qhd/image_color",1,boost::bind(&MainWindow::callback_kinect2_subscriber, this, _1));
+    //kinect2_subcriber=Node->subscribe<sensor_msgs::Image>("/kinect2/qhd/image_color",1,boost::bind(&MainWindow::callback_kinect2_subscriber, this, _1));
 
 }
 
@@ -218,18 +218,18 @@ void MainWindow::lableShowImag(QLabel *lable, Qt::GlobalColor color) {
 }
 
 void MainWindow::LisionRbErrInfo() {
-    hirop_msgs::robotError srv;
-    ros::ServiceClient client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
-    getRobotErr_client.call(srv);
-    uint64_t level=srv.response.errorLevel;
-    int errorLevel=level;
-    string errorMsg=srv.response.errorMsg;
-    string isError=srv.response.isError?"true":"false";
-    string dealMsg=srv.response.dealMsg;
-    QString tmp=QString("errorLevel:%1\nerrorMsg:%2\nisError:%3\ndealMsg:%4").arg(errorLevel).arg(QString().fromStdString(errorMsg)).arg(QString().fromStdString(isError)).arg(QString().fromStdString(dealMsg));
-    if(srv.response.isError){
-        emit emitQmessageBox(infoLevel::information,tmp);
-    }
+    // hirop_msgs::robotError srv;
+    // ros::ServiceClient client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
+    // // getRobotErr_client.call(srv);
+    // uint64_t level=srv.response.errorLevel;
+    // int errorLevel=level;
+    // string errorMsg=srv.response.errorMsg;
+    // string isError=srv.response.isError?"true":"false";
+    // string dealMsg=srv.response.dealMsg;
+    // QString tmp=QString("errorLevel:%1\nerrorMsg:%2\nisError:%3\ndealMsg:%4").arg(errorLevel).arg(QString().fromStdString(errorMsg)).arg(QString().fromStdString(isError)).arg(QString().fromStdString(dealMsg));
+    // if(srv.response.isError){
+    //     emit emitQmessageBox(infoLevel::information,tmp);
+    // }
 }
 
 void MainWindow::slot_timer_updateStatus() {
@@ -252,16 +252,16 @@ void MainWindow::slot_timer_updateStatus() {
         }
     }
 
-    if(map_devDetector["rbIsWell_Detector"]->status== false){
-        if(!messagebox_showOnce)
-        {
-            LisionRbErrInfo();
-            messagebox_showOnce= true;
-        }
-    } else
-    {
-        messagebox_showOnce= false;
-    }
+    // if(map_devDetector["rbIsWell_Detector"]->status== false){
+    //     if(!messagebox_showOnce)
+    //     {
+    //         LisionRbErrInfo();
+    //         messagebox_showOnce= true;
+    //     }
+    // } else
+    // {
+    //     messagebox_showOnce= false;
+    // }
 }
 
 //节点状态监听
@@ -349,20 +349,20 @@ void MainWindow::callback_fsmState_subscriber(const hirop_msgs::taskCmdRet::Cons
             }
         }
     }
-    //如果在准备状态并且是声控模式
-    if(msg->state=="prepare"){
-        //如果是声控模式
-        if(cBox_tab_autoMode_mode->currentIndex()==0)
-        {
-            emit emitQmessageBox(infoLevel::information,QString("请说出你想要的任务，比如“抓牛奶盒”"));
+    // //如果在准备状态并且是声控模式
+    // if(msg->state=="prepare"){
+    //     //如果是声控模式
+    //     if(cBox_tab_autoMode_mode->currentIndex()==0)
+    //     {
+    //         emit emitQmessageBox(infoLevel::information,QString("请说出你想要的任务，比如“抓牛奶盒”"));
 
-        }
-        //如果非声控模式
-        if(cBox_tab_autoMode_mode->currentIndex()==1)
-        {
-            emit emitQmessageBox(infoLevel::information,QString("请再点击一次启动按钮"));
-        }
-    }
+    //     }
+    //     //如果非声控模式
+    //     if(cBox_tab_autoMode_mode->currentIndex()==1)
+    //     {
+    //         emit emitQmessageBox(infoLevel::information,QString("请再点击一次启动按钮"));
+    //     }
+    // }
 }
 
 void MainWindow::callback_robStatus_subscriber(const industrial_msgs::RobotStatus::ConstPtr robot_status) {
@@ -409,6 +409,11 @@ void MainWindow::callback_yolo6dImagRes_subcriber(const sensor_msgs::Image::Cons
 void MainWindow::callback_d435iImagRes_subcriber(const sensor_msgs::Image::ConstPtr &msg) {
     map_devDetector["d435iConn_Detector"]->lifeNum=100;
     map_devDetector["d435iConn_Detector"]->status= true;
+  //  d435iImagRes_subcriber.shutdown();
+    //sleep(1);
+    //d435iImagRes_subcriber=Node->subscribe<sensor_msgs::Image>("/camera_base/color/image_raw",1,boost::bind(&MainWindow::callback_d435iImagRes_subcriber, this, _1));
+
+
 }
 
 void MainWindow::slot_btn_tabmain_devConn() {
@@ -453,6 +458,7 @@ void MainWindow::slot_btn_tabmain_sysReset() {
         sleep(5);
         cout<<"5s休眠完"<<endl;
         system("kill -9 $(ps -ef | grep kinect2* | awk '{print $2}')");
+	    system("kill -9 $(ps -ef | grep nodelet | awk '{print $2}')");
         system("echo y| rosrun grabrb_ui clearNode.sh");
 
         startUpFlag_devconn= false;
@@ -467,7 +473,7 @@ void MainWindow::slot_btn_tab_autoMode_run() {
         srv.request.taskName="prepare";
         srv.request.behavior="starting";
         srv.request.param.resize(1);
-        srv.request.param[0]="测试";
+        srv.request.param[0]="wangzai1";
         if(!fsmCmd_client.call(srv))
         {
             emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
