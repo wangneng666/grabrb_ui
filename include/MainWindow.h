@@ -24,6 +24,8 @@
 #include "hirop_msgs/taskInputCmd.h"
 #include "hirop_msgs/taskCmdRet.h"
 #include "hirop_msgs/robotError.h"
+#include "hirop_msgs/closeGripper.h"
+#include "hirop_msgs/openGripper.h"
 #include <atomic>
 
 //标准库
@@ -73,6 +75,8 @@ private:
     ros::ServiceClient RobSetMode_client;
     ros::ServiceClient fsmCmd_client;///VoiceCtlRob_TaskServerCmd
     ros::ServiceClient getRobotErr_client;
+    ros::ServiceClient openGripper_client;
+    ros::ServiceClient closeGripper_client;
 
     ros::Subscriber fsmState_subscriber;
     ros::Subscriber robStatus_subscriber;

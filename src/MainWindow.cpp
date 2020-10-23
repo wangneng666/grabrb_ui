@@ -74,6 +74,8 @@ void MainWindow::initRosToptic() {
     RobEnable_client = Node->serviceClient<hsr_rosi_device::SetEnableSrv>("/set_robot_enable");
     RobSetMode_client = Node->serviceClient<hsr_rosi_device::setModeSrv>("/set_mode_srv");
     // getRobotErr_client = Node->serviceClient<hirop_msgs::robotError>("getRobotErrorFaultMsg");
+    openGripper_client = Node->serviceClient<hirop_msgs::openGripper>("/openGripper");
+    closeGripper_client = Node->serviceClient<hirop_msgs::closeGripper>("/closeGripper");
 
     fsmState_subscriber=Node->subscribe<hirop_msgs::taskCmdRet>("/VisualCapture_state",1000,boost::bind(&MainWindow::callback_fsmState_subscriber,this,_1));
     robStatus_subscriber=Node->subscribe<industrial_msgs::RobotStatus>("robot_status",1,boost::bind(&MainWindow::callback_robStatus_subscriber,this,_1));
@@ -413,7 +415,8 @@ void MainWindow::callback_yolo6dImagRes_subcriber(const sensor_msgs::Image::Cons
     cv::Mat mat = ptr->image;
     QImage qimage = cvMat2QImage(mat);
     QPixmap tmp_pixmap = QPixmap::fromImage(qimage);
-    new_pixmap = tmp_pixmap.scaled(msg->width/2, msg->height/2, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
+//    new_pixmap = tmp_pixmap.scaled(msg->width/2, msg->height/2, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
+    new_pixmap = tmp_pixmap.scaled(512, 424, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
     labeltab_autoMode_image->setPixmap(new_pixmap);
 }
 
@@ -556,11 +559,13 @@ void MainWindow::slot_btn_rbReset() {
 }
 
 void MainWindow::slot_btn_gripper_open() {
-
+    hirop_msgs::openGripper srv;
+    openGripper_client.call(srv);
 }
 
 void MainWindow::slot_btn_gripper_close() {
-
+    hirop_msgs::closeGripper srv;
+    closeGripper_client.call(srv);
 }
 
 void MainWindow::slot_btn_rbGoHomePose() {
