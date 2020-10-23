@@ -24,6 +24,7 @@
 #include "hirop_msgs/taskInputCmd.h"
 #include "hirop_msgs/taskCmdRet.h"
 #include "hirop_msgs/robotError.h"
+#include <atomic>
 
 //标准库
 #include "ros/ros.h"
@@ -63,6 +64,7 @@ private:
     QMutex lock_showImg;
     QPalette palette;
     bool messagebox_showOnce= false;
+    atomic<bool> enable_btn_tab_autoMode;
 
 private:
     //ros消息对象

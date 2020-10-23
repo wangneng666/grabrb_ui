@@ -763,6 +763,8 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
 
     cBox_tab_autoMode_boxmodel->setVisible(false);
 
+    btn_rbGoHomePose->setVisible(false);
+
     retranslateUi(MainWindow);
 
 //    tabWidget->setCurrentIndex(3);

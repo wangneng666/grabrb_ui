@@ -337,18 +337,29 @@ void MainWindow::callback_fsmState_subscriber(const hirop_msgs::taskCmdRet::Cons
 
     if(msg->behevior=="initing"){
         for (auto &fsmstate : map_fsmState) {
-            if(fsmstate.second->stateName==msg->state){
-                lableShowImag(fsmstate.second->lableList_showStatus,Qt::green);
-            }
-        }
-    }
-    if(msg->behevior=="quiting"){
-        for (auto &fsmstate : map_fsmState) {
-            if(fsmstate.second->stateName==msg->state){
+            if(fsmstate.second->status)
+            {
                 lableShowImag(fsmstate.second->lableList_showStatus,Qt::red);
+                fsmstate.second->status= false;
+            }
+        }
+
+        for (auto &fsmstate : map_fsmState) {
+            if(fsmstate.second->stateName==msg->state)
+            {
+                lableShowImag(fsmstate.second->lableList_showStatus,Qt::green);
+                fsmstate.second->status= true;
             }
         }
     }
+//    if(msg->behevior=="quiting"){
+//        for (auto &fsmstate : map_fsmState) {
+//            if(fsmstate.second->stateName==msg->state){
+//                lableShowImag(fsmstate.second->lableList_showStatus,Qt::red);
+//                fsmstate.second->status= false;
+//            }
+//        }
+//    }
     // //如果在准备状态并且是声控模式
     // if(msg->state=="prepare"){
     //     //如果是声控模式
@@ -420,7 +431,8 @@ void MainWindow::slot_btn_tabmain_devConn() {
     if(!startUpFlag_devconn){
         startUpFlag_devconn= true;
         system("rosrun grabrb_ui bringup.sh &");
-    } else{
+    } else
+    {
         emit emitQmessageBox(infoLevel::warning,QString("请不要重复连接设备!"));
     }
 }
@@ -469,6 +481,17 @@ void MainWindow::slot_btn_tabmain_sysReset() {
 
 
 void MainWindow::slot_btn_tab_autoMode_run() {
+
+    if(map_fsmState["look"]->status||map_fsmState["detection"]->status\
+    ||map_fsmState["pick"]->status||map_fsmState["place"]->status)
+    {
+        enable_btn_tab_autoMode= false;
+    } else{
+        enable_btn_tab_autoMode= true;
+    }
+
+    if(enable_btn_tab_autoMode)
+    {
         hirop_msgs::taskInputCmd srv;
         srv.request.taskName="prepare";
         srv.request.behavior="starting";
@@ -478,6 +501,12 @@ void MainWindow::slot_btn_tab_autoMode_run() {
         {
             emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
         }
+    }
+    else
+    {
+        emit emitQmessageBox(infoLevel::warning,QString("请不要重复启动"));
+    }
+
 }
 
 void MainWindow::slot_btn_tab_autoMode_normalstop() {
@@ -494,6 +523,7 @@ void MainWindow::slot_btn_tab_autoMode_quickstop() {
     hsr_rosi_device::SetEnableSrv srv;
     srv.request.enable= false;
     RobEnable_client.call(srv);
+    enable_btn_tab_autoMode=true;
 }
 
 void MainWindow::slot_btn_tab_stepMode_goPhotoPose() {
