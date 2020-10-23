@@ -371,6 +371,7 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
     cBox_tab_autoMode_boxmodel = new QComboBox(gBox_tab_autoMode_mode);
     cBox_tab_autoMode_boxmodel->addItem(QString());
     cBox_tab_autoMode_boxmodel->addItem(QString());
+    cBox_tab_autoMode_boxmodel->addItem(QString());
     cBox_tab_autoMode_boxmodel->setObjectName(QString::fromUtf8("cBox_tab_autoMode_boxmodel"));
     cBox_tab_autoMode_boxmodel->setFixedSize(QSize(200, 50));
 
@@ -778,7 +779,7 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
 }
 
 void BaseWindow::retranslateUi(QMainWindow *MainWindow) {
-    MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+    MainWindow->setWindowTitle(QApplication::translate("智能协作机器人平台", "智能协作机器人平台", nullptr));
     label_main_logo->setText(QString());
     label_main_title->setText(QApplication::translate("MainWindow", "\345\215\217\344\275\234\346\234\272\345\231\250\344\272\272\346\212\223\345\217\226\345\271\263\345\217\260", nullptr));
     gBox_tabmain_status->setTitle(QApplication::translate("MainWindow", "\350\277\220\350\241\214\345\207\206\345\244\207\347\212\266\346\200\201", nullptr));
@@ -825,6 +826,7 @@ void BaseWindow::retranslateUi(QMainWindow *MainWindow) {
 
     cBox_tab_autoMode_boxmodel->setItemText(0, QApplication::translate("MainWindow", "\346\212\223\346\227\272\344\273\224\347\211\233\345\245\266", nullptr));
     cBox_tab_autoMode_boxmodel->setItemText(1, QApplication::translate("MainWindow", "\346\212\223\347\273\264\344\273\226\345\245\266", nullptr));
+    cBox_tab_autoMode_boxmodel->setItemText(2, QApplication::translate("MainWindow", "抓可乐", nullptr));
 
     gBox_tab_autoMode_operate->setTitle(QApplication::translate("MainWindow", "\346\223\215\344\275\234\346\240\217", nullptr));
     btn_tab_autoMode_run->setText(QApplication::translate("MainWindow", "\345\220\257\345\212\250", nullptr));

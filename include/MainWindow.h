@@ -153,6 +153,7 @@ private slots:
     void showQmessageBox(infoLevel level,QString info);
     void slot_combox_chooseMode_Clicked(int index);
     void slot_cBox_tab_autoMode_mode_Clicked(int index);
+    void slot_cBox_tab_autoMode_boxmodel_Clicked(int index);
 };
 
 

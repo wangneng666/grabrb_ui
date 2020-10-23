@@ -101,6 +101,7 @@ void MainWindow::signalAndSlot() {
     connect(btn_tab_autoMode_normalstop,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_autoMode_normalstop);
     connect(btn_tab_autoMode_quickstop,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_autoMode_quickstop);
     connect(cBox_tab_autoMode_mode,SIGNAL(currentIndexChanged(int)), this, SLOT(slot_cBox_tab_autoMode_mode_Clicked(int)));
+    connect(cBox_tab_autoMode_boxmodel,SIGNAL(currentIndexChanged(int)), this, SLOT(slot_cBox_tab_autoMode_boxmodel_Clicked(int)));
 
     //手动模式界面
     connect(btn_tab_stepMode_goPhotoPose,&QPushButton::clicked,this,&MainWindow::slot_btn_tab_stepMode_goPhotoPose);
@@ -500,7 +501,15 @@ void MainWindow::slot_btn_tab_autoMode_run() {
         srv.request.taskName="prepare";
         srv.request.behavior="starting";
         srv.request.param.resize(1);
-        srv.request.param[0]="wangzai1";
+        if(cBox_tab_autoMode_boxmodel->currentIndex()==0){
+            srv.request.param[0]="wangzai1";
+        }
+        if(cBox_tab_autoMode_boxmodel->currentIndex()==1){
+            srv.request.param[0]="milk3";
+        }
+        if(cBox_tab_autoMode_boxmodel->currentIndex()==2){
+            srv.request.param[0]="cola1";
+        }
         if(!fsmCmd_client.call(srv))
         {
             emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
@@ -650,6 +659,10 @@ void MainWindow::slot_cBox_tab_autoMode_mode_Clicked(int index){
             cBox_tab_autoMode_boxmodel->setVisible(true);
             break;
     }
+}
+
+void MainWindow::slot_cBox_tab_autoMode_boxmodel_Clicked(int index){
+
 }
 
 void MainWindow::callback_kinect2_subscriber(const sensor_msgs::Image::ConstPtr &msg) {
