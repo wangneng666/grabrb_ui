@@ -31,8 +31,8 @@ void MainWindow::SysVarInit() {
     for (size_t i = 0; i <devDetectorName.size(); ++i) {
         map_devDetector.insert(pair<string ,devDetector*>(devDetectorName[i],new devDetector{devDetectorName[i],0,true,false,devDetectorShowLable[i]}));
     }
-    map_devDetector["gripperConn_Detector"]->real_time= false;//非实时监控
-    map_devDetector["senceFinish_Detector"]->real_time= false;//非实时监控
+//    map_devDetector["gripperConn_Detector"]->real_time= false;//非实时监控
+//    map_devDetector["senceFinish_Detector"]->real_time= false;//非实时监控
     //状态机状态监控
     vector<string> fsmStateName\
     {
@@ -531,15 +531,36 @@ void MainWindow::slot_btn_tab_autoMode_quickstop() {
 }
 
 void MainWindow::slot_btn_tab_stepMode_goPhotoPose() {
-
+    hirop_msgs::taskInputCmd srv;
+    srv.request.behavior="switch";
+    srv.request.param.resize(1);
+    srv.request.param[0]="1";
+    if(!fsmCmd_client.call(srv))
+    {
+        emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
+    }
 }
 
 void MainWindow::slot_btn_tab_stepMode_detectAndGrab() {
-
+    hirop_msgs::taskInputCmd srv;
+    srv.request.behavior="switch";
+    srv.request.param.resize(1);
+    srv.request.param[0]="2";
+    if(!fsmCmd_client.call(srv))
+    {
+        emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
+    }
 }
 
 void MainWindow::slot_btn_tab_stepMode_goHomePose() {
-
+    hirop_msgs::taskInputCmd srv;
+    srv.request.behavior="switch";
+    srv.request.param.resize(1);
+    srv.request.param[0]="3";
+    if(!fsmCmd_client.call(srv))
+    {
+        emit emitQmessageBox(infoLevel::warning,QString("状态机服务连接失败!"));
+    }
 }
 
 void MainWindow::slot_btn_tab_stepMode_Estop() {
