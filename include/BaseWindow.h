@@ -146,6 +146,7 @@ public:
     QPushButton *btn_tab_autoMode_run;
     QPushButton *btn_tab_autoMode_normalstop;
     QPushButton *btn_tab_autoMode_quickstop;
+
     QWidget *tab_stepMode;
     QHBoxLayout *horizontalLayout_4;
     QHBoxLayout *hLayout_tab_stepMode_1;

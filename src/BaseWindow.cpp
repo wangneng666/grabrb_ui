@@ -32,7 +32,8 @@ void BaseWindow::initQtVal() {
 //    string package_path = ros::package::getPath("grabrb_ui");
     photoPath= QDir::currentPath() +QString("/src/handrb_ui/photo");
 //    logPath= QDir::currentPath()+QString("/src/grabrb_ui/photo/logo.png");
-    logPath=QString().fromStdString(ros::package::getPath("grabrb_ui"))+QString("/photo/logo.png");
+//    logPath=QString().fromStdString(ros::package::getPath("grabrb_ui"))+QString("/photo/logo.png");
+    logPath=QString().fromStdString(ros::package::getPath("grabrb_ui"))+QString("/photo/logo_ros.png");
 }
 
 
@@ -54,7 +55,11 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
     hLayout_main_11->setObjectName(QString::fromUtf8("hLayout_main_11"));
     label_main_logo = new QLabel(centralWidget);
     label_main_logo->setObjectName(QString::fromUtf8("label_main_logo"));
-    label_main_logo->setPixmap(QPixmap(logPath));
+    QPixmap tmp_pixmap(logPath);
+    QPixmap new_pixmap = tmp_pixmap.scaled(200, 50, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
+
+//    label_main_logo->setPixmap(QPixmap(logPath));
+    label_main_logo->setPixmap(new_pixmap);
 
     hLayout_main_11->addWidget(label_main_logo);
 
@@ -279,7 +284,7 @@ void BaseWindow::initUi(QMainWindow *MainWindow) {
     labeltab_autoMode_image = new QLabel(gBox_tab_autoMode_img);
     labeltab_autoMode_image->setObjectName(QString::fromUtf8("labeltab_autoMode_image"));
 //    labeltab_autoMode_image->setMaximumSize(QSize(300, 300));
-    labeltab_autoMode_image->setPixmap(QPixmap(photoPath+"/question.jpg"));
+//    labeltab_autoMode_image->setPixmap(QPixmap(photoPath+"/question.jpg"));
 
     horizontalLayout_15->addWidget(labeltab_autoMode_image);
 
@@ -826,7 +831,7 @@ void BaseWindow::retranslateUi(QMainWindow *MainWindow) {
     btn_tab_autoMode_normalstop->setText(QApplication::translate("MainWindow", "重启", nullptr));
     btn_tab_autoMode_quickstop->setText(QApplication::translate("MainWindow", "\346\200\245\345\201\234", nullptr));
     gBox_tab_stepMode_showImg->setTitle(QApplication::translate("MainWindow", "\345\233\276\345\203\217\346\230\276\347\244\272", nullptr));
-    label_tab_stepMode_showImg->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
+//    label_tab_stepMode_showImg->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
     gBox_tab_stepMode_status->setTitle(QApplication::translate("MainWindow", "\345\207\206\345\244\207\347\212\266\346\200\201", nullptr));
     label_tab_stepMode_pickPlaceBridge->setText(QApplication::translate("MainWindow", "\346\212\223\345\217\226\346\241\245\350\212\202\347\202\271", nullptr));
     label_tab_stepMode_rd435iConn->setText(QApplication::translate("MainWindow", "d435i\347\233\270\346\234\272\350\277\236\346\216\245", nullptr));

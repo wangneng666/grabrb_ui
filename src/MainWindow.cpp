@@ -417,7 +417,8 @@ void MainWindow::callback_yolo6dImagRes_subcriber(const sensor_msgs::Image::Cons
     QPixmap tmp_pixmap = QPixmap::fromImage(qimage);
 //    new_pixmap = tmp_pixmap.scaled(msg->width/2, msg->height/2, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
     new_pixmap = tmp_pixmap.scaled(512, 424, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
-    labeltab_autoMode_image->setPixmap(new_pixmap);
+//    labeltab_autoMode_image->setPixmap(new_pixmap);
+    label_tab_stepMode_showImg->setPixmap(new_pixmap);
 }
 
 void MainWindow::callback_d435iImagRes_subcriber(const sensor_msgs::Image::ConstPtr &msg) {
