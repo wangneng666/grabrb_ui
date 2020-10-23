@@ -13,7 +13,7 @@ for((i=0; i<5; i++))
 done;
 
 
-roslaunch gripper_bridge gripper_bridge1.launch &
+roslaunch gripper_bridge gripper_bridge.launch &
 rosrun perception_bridge perception_bridge &
 sleep 5
 roslaunch kinect2_bridge kinect2_bridge.launch & 
@@ -35,5 +35,6 @@ rosrun perception_bridge shelf.sh
 
 cd ~/catkin_ws_v3/kdxf/Linux_aiui5.5.1059.0000_5d706e05/samples/aiui_sample/build/
 gnome-terminal -x bash -c "rosrun asr_bridge asr_bridge" &
+rosrun hsr_robot_voice voice_assistant &
 
 #kill $(ps -ef | grep kinect2 | awk '{print $2}')
